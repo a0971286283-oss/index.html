@@ -1,0 +1,3611 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#a855f7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="糖尿病自我照護">
+<meta name="description" content="糖尿病自我照護衛教數位教材：認識糖尿病、血糖目標、飲食、運動、藥物與日常照護，附互動測驗與重點回顧。">
+<title>糖尿病自我照護 · 衛教數位教材</title>
+<style>
+  :root{
+    --bg:#fbf6ff; --surface:#ffffff; --ink:#2a1540; --muted:#6f5d86;
+    --brand:#a855f7; --brand-d:#7c3aed; --brand-l:#f3e8ff;
+    --pink:#ec4899; --pink-l:#ffe9f3;
+    --amber:#d97706; --amber-l:#fff5e5;
+    --red:#c0392b; --red-l:#fdeceb;
+    --green:#15803d; --green-l:#e9f8ee;
+    --line:#efe3fb;
+    --r:20px;
+    --safe-t:env(safe-area-inset-top,0px);
+    --safe-b:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    background:var(--bg);color:var(--ink);font-size:15px;line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  button,input{font-family:inherit}
+
+  /* ===== App 外框 ===== */
+  #app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:760px;margin:0 auto;background:var(--bg)}
+
+  header{
+    flex:0 0 auto;display:flex;align-items:center;gap:10px;
+    padding:calc(var(--safe-t) + 10px) 16px 10px;
+    background:rgba(255,255,255,.94);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);z-index:10;
+  }
+  .logo{
+    width:36px;height:36px;border-radius:13px;flex:0 0 auto;
+    background:linear-gradient(135deg,#f472b6,#a855f7);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 3px 9px rgba(168,85,247,.38);
+  }
+  .logo svg{display:block}
+  .hd-txt{flex:1;min-width:0}
+  .hd-txt h1{margin:0;font-size:15.5px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hd-txt p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.4}
+  .hd-prog{
+    flex:0 0 auto;text-align:right;font-size:11.5px;color:var(--muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .hd-prog b{display:block;font-size:14px;color:var(--brand);line-height:1.2}
+
+  /* ===== 視圖 ===== */
+  #views{flex:1;position:relative;overflow:hidden}
+  .view{
+    position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:18px 16px 30px;display:none;
+  }
+  .view.active{display:block;animation:fade .22s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ===== 底部分頁籤 ===== */
+  #tabs{
+    flex:0 0 auto;display:flex;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);padding-bottom:var(--safe-b);z-index:10;
+  }
+  #tabs button{
+    flex:1;border:0;background:none;padding:8px 2px 7px;cursor:pointer;color:var(--muted);
+    display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;
+    border-radius:16px;margin:5px 5px 4px;transition:.2s;
+  }
+  #tabs button .ic{font-size:19px;line-height:1.1;filter:grayscale(1);opacity:.62}
+  #tabs button.on{color:var(--brand-d);font-weight:800;background:var(--brand-l)}
+  #tabs button.on .ic{filter:none;opacity:1;transform:translateY(-1px) scale(1.08)}
+
+  /* ===== 通用元件 ===== */
+  .chip{
+    display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.6px;
+    color:var(--brand-d);background:var(--brand-l);padding:3px 11px;border-radius:999px;
+  }
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+    padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(168,85,247,.10);
+  }
+  .card h3{
+    margin:0 0 7px;font-size:15.5px;color:var(--brand-d);line-height:1.5;
+    display:flex;align-items:center;gap:7px;
+  }
+  .card h3 .dot{width:7px;height:7px;border-radius:50%;background:var(--brand);flex:0 0 auto}
+  .card p{margin:6px 0 0}
+  .card ul{margin:6px 0 0;padding-left:19px}
+  .card li{margin:5px 0;line-height:1.7}
+  .card li::marker{color:var(--brand)}
+  b,strong{color:var(--brand-d)}
+  .lead{
+    background:var(--brand-l);border-left:4px solid var(--brand);
+    border-radius:0 12px 12px 0;padding:11px 14px;margin:0 0 12px;
+    font-size:14.5px;line-height:1.75;
+  }
+  .note{font-size:12.5px;color:var(--muted);line-height:1.7;margin:8px 0 0}
+
+  /* 數字卡 */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}
+  .stat{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:12px 13px;text-align:center;
+  }
+  .stat .n{font-size:26px;font-weight:800;color:var(--brand);line-height:1.25;font-variant-numeric:tabular-nums}
+  .stat .n small{font-size:13px;font-weight:700}
+  .stat .l{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:3px}
+
+  /* 表格式目標 */
+  .rows{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:12px}
+  .row{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:0}
+  .row:nth-child(even){background:#fcf9ff}
+  .row .k{flex:1;font-size:14.5px}
+  .row .v{font-weight:800;color:var(--brand-d);font-size:15.5px;font-variant-numeric:tabular-nums;text-align:right}
+
+  /* 內頁 */
+  .page{
+    background:var(--surface);border:1px solid var(--line);border-radius:20px;
+    padding:16px 16px 14px;margin-bottom:14px;
+    box-shadow:0 1px 4px rgba(168,85,247,.10);
+    scroll-margin-top:64px;
+    transition:box-shadow .3s, outline-color .3s;
+    outline:3px solid transparent;outline-offset:-3px;
+  }
+  .page.flash{outline-color:var(--amber);box-shadow:0 4px 16px rgba(224,137,9,.28)}
+  .pg-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .pg-no{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .page h2{font-size:20px;line-height:1.4;margin:9px 0 11px;color:var(--ink)}
+  .src{
+    margin-top:12px;padding-top:9px;border-top:1px dashed var(--line);
+    font-size:11.5px;color:var(--muted);line-height:1.65;
+  }
+  .src b{color:var(--brand);font-weight:700}
+
+  /* 章節快速列 */
+  #chapbar{
+    position:sticky;top:-18px;z-index:6;margin:-18px -16px 14px;
+    padding:11px 16px 10px;background:rgba(251,246,255,.96);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    display:flex;gap:7px;overflow-x:auto;white-space:nowrap;scrollbar-width:none;
+  }
+  #chapbar::-webkit-scrollbar{display:none}
+  #chapbar button{
+    flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--muted);
+    border-radius:999px;font-size:12.5px;padding:6px 13px;cursor:pointer;
+  }
+  #chapbar button.on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
+
+  /* ===== 首頁 ===== */
+  .hero{
+    border-radius:22px;overflow:hidden;margin-bottom:14px;
+    box-shadow:0 8px 22px rgba(168,85,247,.28);
+  }
+  .hero svg{display:block;width:100%;height:auto}
+  .hero-txt{
+    position:relative;overflow:hidden;
+    padding:16px 18px 18px;background:linear-gradient(135deg,#d946ef 0%,#a855f7 52%,#7c3aed 100%);color:#fff;
+  }
+  .hero-txt::before,.hero-txt::after{
+    content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.13);pointer-events:none;
+  }
+  .hero-txt::before{width:130px;height:130px;right:-38px;top:-52px}
+  .hero-txt::after{width:78px;height:78px;left:-26px;bottom:-40px}
+  .hero-txt>*{position:relative}
+  .hero-txt .k{font-size:12px;letter-spacing:2px;opacity:.9}
+  .hero-txt h2{margin:6px 0 4px;font-size:29px;line-height:1.3;letter-spacing:1px}
+  .hero-txt p{margin:6px 0 0;font-size:14px;line-height:1.8;opacity:.95}
+  .btn-row{display:flex;gap:10px;margin-bottom:14px}
+  .btn{
+    flex:1;border:0;border-radius:14px;padding:13px 14px;font-size:15.5px;font-weight:700;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  }
+  .btn.primary{background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;box-shadow:0 4px 12px rgba(168,85,247,.35)}
+  .btn.ghost{background:var(--surface);color:var(--brand-d);border:1.5px solid var(--brand)}
+  .btn:active{transform:translateY(1px)}
+  .prog-card .bar{height:9px;background:#f0e6fd;border-radius:99px;overflow:hidden;margin-top:9px}
+  .prog-card .bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#a855f7,#ec4899);transition:width .5s}
+  .prog-card .t{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;color:var(--muted)}
+  .prog-card .t b{font-size:16px;color:var(--brand);font-variant-numeric:tabular-nums}
+  .meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .meta div{background:#faf6ff;border:1px solid var(--line);border-radius:12px;padding:9px 11px;font-size:13px;line-height:1.6}
+  .meta div span{display:block;font-size:11.5px;color:var(--muted)}
+
+  /* ===== 測驗 ===== */
+  .qdots{display:flex;gap:6px;justify-content:center;margin-bottom:14px}
+  .qdots i{width:9px;height:9px;border-radius:50%;background:#e9d9fb;transition:.25s}
+  .qdots i.on{background:var(--brand);transform:scale(1.2)}
+  .qdots i.done{background:#f9a8d4}
+  .qcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:17px 17px 15px;box-shadow:0 1px 4px rgba(168,85,247,.10)}
+  .qcard .qn{font-size:12px;color:var(--muted);letter-spacing:1px}
+  .qcard h2{font-size:18.5px;line-height:1.6;margin:7px 0 15px}
+  .opt{
+    width:100%;text-align:left;display:flex;align-items:flex-start;gap:11px;
+    background:#faf6ff;border:1.5px solid var(--line);border-radius:14px;
+    padding:12px 13px;margin-bottom:10px;font-size:15px;line-height:1.6;cursor:pointer;color:var(--ink);
+    transition:.15s;
+  }
+  .opt .lt{
+    flex:0 0 auto;width:24px;height:24px;border-radius:8px;background:#f0e6fd;color:var(--brand-d);
+    display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-top:1px;
+  }
+  .opt:active{transform:scale(.99)}
+  .opt.correct{background:var(--green-l);border-color:#7cc79a}
+  .opt.correct .lt{background:var(--green);color:#fff}
+  .opt.wrong{background:var(--red-l);border-color:#e8a49c}
+  .opt.wrong .lt{background:var(--red);color:#fff}
+  .opt.dim{opacity:.55}
+  .fb{border-radius:14px;padding:13px 14px;margin-top:4px;font-size:14.5px;line-height:1.75;animation:fade .25s ease}
+  .fb.ok{background:var(--green-l);border:1px solid #a9dcbc}
+  .fb.no{background:var(--amber-l);border:1px solid #f0cf98}
+  .fb .hd{font-weight:800;font-size:15.5px;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+  .fb.ok .hd{color:var(--green)}
+  .fb.no .hd{color:#9a6108}
+  .fb .why{margin:0}
+  .fb .back{
+    display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+    background:var(--brand);color:#fff;border:0;border-radius:10px;
+    padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .qnav{display:flex;gap:10px;margin-top:14px}
+  .qnav .btn{padding:12px}
+  .score-ring{
+    width:132px;height:132px;border-radius:50%;margin:8px auto 14px;
+    background:conic-gradient(var(--brand) calc(var(--p)*1%),#f0e6fd 0);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .score-ring .in{
+    width:104px;height:104px;border-radius:50%;background:var(--surface);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .score-ring .in b{font-size:30px;color:var(--brand);line-height:1.1}
+  .score-ring .in span{font-size:12px;color:var(--muted)}
+
+  /* ===== 回顧 ===== */
+  .sum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:9px;margin-bottom:13px}
+  .sum-grid .s{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:11px 8px;text-align:center;
+  }
+  .sum-grid .s .n{font-size:21px;font-weight:800;color:var(--brand);line-height:1.3;font-variant-numeric:tabular-nums}
+  .sum-grid .s .l{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:2px}
+  .check li{list-style:none;position:relative;padding-left:27px;margin:8px 0}
+  .check li::before{
+    content:"✓";position:absolute;left:0;top:1px;width:19px;height:19px;border-radius:50%;
+    background:var(--brand-l);color:var(--brand);font-size:12px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .check{padding-left:0;margin:4px 0 0}
+
+  /* ===== 分享 ===== */
+  .qr-\boxed{
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;
+    text-align:center;margin-bottom:12px;
+  }
+  .qr-box img{width:100%;max-width:270px;height:auto;display:block;margin:0 auto;border-radius:8px}
+  .qr-box .cap{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.6;word-break:break-all}
+  .urlrow{display:flex;gap:8px;margin-bottom:10px}
+  .urlrow input{
+    flex:1;min-width:0;border:1.5px solid var(--line);border-radius:12px;
+    padding:11px 12px;font-size:14px;background:#faf6ff;color:var(--ink);
+  }
+  .urlrow input:focus{outline:none;border-color:var(--brand);background:#fff}
+  .urlrow button{
+    flex:0 0 auto;border:0;border-radius:12px;padding:11px 15px;background:var(--brand);
+    color:#fff;font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .steps{counter-reset:s;margin:0;padding:0;list-style:none}
+  .steps li{
+    counter-increment:s;position:relative;padding:0 0 13px 38px;margin:0;
+    font-size:14.5px;line-height:1.7;
+  }
+  .steps li::before{
+    content:counter(s);position:absolute;left:0;top:1px;width:25px;height:25px;border-radius:50%;
+    background:var(--brand);color:#fff;font-size:13px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .steps li::after{
+    content:"";position:absolute;left:12px;top:28px;bottom:2px;width:1.5px;background:var(--line);
+  }
+  .steps li:last-child::after{display:none}
+  .steps li b{display:block}
+  .toast{
+    position:fixed;left:50%;bottom:calc(78px + var(--safe-b));transform:translate(-50%,14px);
+    background:#3b1d63;color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;
+    opacity:0;pointer-events:none;transition:.28s;z-index:60;white-space:nowrap;
+  }
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+
+  .sec-t{font-size:17px;margin:4px 0 11px;display:flex;align-items:center;gap:8px}
+  .sec-t .bar{width:4px;height:17px;border-radius:2px;background:var(--brand)}
+  .ref{font-size:13.5px;line-height:1.8;padding:11px 13px;background:var(--surface);
+       border:1px solid var(--line);border-radius:14px;margin-bottom:9px}
+  .ref b{color:var(--brand-d);font-variant-numeric:tabular-nums}
+  .ref .u{display:block;font-size:11.5px;color:var(--muted);word-break:break-all;line-height:1.6}
+
+  /* ===== 完成打勾 / 測驗鎖定 ===== */
+  .done-card{
+    display:flex;align-items:center;gap:12px;
+    background:var(--surface);border:1.5px dashed #e3d1f7;border-radius:18px;
+    padding:14px 15px;box-shadow:0 1px 4px rgba(168,85,247,.10);
+  }
+  .done-card.ready{
+    border-style:solid;border-color:#e9b9fb;
+    background:linear-gradient(135deg,#fdf4ff,#ffeefb);
+  }
+  .done-ic{
+    width:46px;height:46px;border-radius:15px;flex:0 0 auto;
+    background:#f3e8ff;display:flex;align-items:center;justify-content:center;
+    font-size:23px;filter:grayscale(1);opacity:.55;transition:.3s;
+  }
+  .done-card.ready .done-ic{filter:none;opacity:1;background:#fff;box-shadow:0 2px 6px rgba(168,85,247,.22)}
+  .done-txt{flex:1;min-width:0}
+  .done-txt b{display:block;font-size:14.5px;line-height:1.5;color:var(--ink)}
+  .done-txt span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums}
+  .done-bar{height:7px;background:#f0e6fd;border-radius:99px;overflow:hidden;margin-top:8px}
+  .done-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#a855f7,#ec4899);transition:width .5s}
+  .done-btn{
+    flex:0 0 auto;border:0;border-radius:999px;padding:13px 17px;
+    font-size:14.5px;font-weight:800;background:#f0e4fc;color:#a68cc4;
+    cursor:not-allowed;letter-spacing:.5px;
+  }
+  .done-card.ready .done-btn{
+    background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;cursor:pointer;
+    box-shadow:0 4px 12px rgba(168,85,247,.35);
+  }
+  .done-card.done .done-btn{background:var(--green);box-shadow:0 4px 12px rgba(21,128,61,.3)}
+  .lock-card{text-align:center;padding:26px 18px 22px}
+  .lock-card .lic{font-size:46px;line-height:1.2}
+  .lock-card h2{font-size:19px;margin:10px 0 8px}
+  .lock-card p{font-size:14.5px;color:var(--muted);line-height:1.8;margin:0 auto 14px;max-width:300px}
+  .lock-card .lp{
+    display:inline-block;background:var(--brand-l);color:var(--brand-d);
+    border-radius:999px;padding:7px 16px;font-size:14px;font-weight:800;margin-bottom:16px;
+    font-variant-numeric:tabular-nums;
+  }
+  .lb{line-height:1.1}
+
+  @media (max-width:360px){
+    .hero-txt h2{font-size:25px}
+    .page h2{font-size:18.5px}
+    .stat .n{font-size:23px}
+    .done-card{gap:9px;padding:12px 12px}
+    .done-ic{width:40px;height:40px;font-size:20px;border-radius:13px}
+    .done-btn{padding:12px 13px;font-size:13.5px}
+  }
+  @media (min-width:700px){
+    .view{padding:24px 28px 40px}
+    #chapbar{margin:-24px -28px 18px;padding:12px 28px 11px;top:-24px}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24">
+        <path d="M12 2.4c0 0-7.2 8.6-7.2 13.2a7.2 7.2 0 0 0 14.4 0C19.2 11 12 2.4 12 2.4z" fill="#fff"/>
+        <circle cx="8.1" cy="16.4" r="1.15" fill="#f9a8d4"/>
+        <circle cx="15.9" cy="16.4" r="1.15" fill="#f9a8d4"/>
+        <circle cx="9.7" cy="14.2" r="1.15" fill="#6d28d9"/>
+        <circle cx="14.3" cy="14.2" r="1.15" fill="#6d28d9"/>
+        <path d="M10 16.7q2 2 4 0" fill="none" stroke="#6d28d9" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="hd-txt">
+      <h1>糖尿病自我照護</h1>
+      <p>衛教數位教材 · 教學原理第十組</p>
+    </div>
+    <div class="hd-prog"><b id="hdRead">0/14</b>已閱讀</div>
+  </header>
+
+  <main id="views">
+
+    <!-- ================= 首頁 ================= -->
+    <section class="view active" id="view-home">
+      <div class="hero">
+        <svg viewBox="0 0 320 118" role="img" aria-label="血糖與健康生活的插圖">
+          <defs>
+            <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#e879f9"/>
+              <stop offset=".5" stop-color="#c026d3"/>
+              <stop offset="1" stop-color="#7c3aed"/>
+            </linearGradient>
+          </defs>
+          <rect width="320" height="118" fill="url(#hg)"/>
+          <circle cx="274" cy="24" r="38" fill="#ffffff" opacity=".14"/>
+          <circle cx="34" cy="102" r="44" fill="#ffffff" opacity=".11"/>
+          <circle cx="214" cy="96" r="26" fill="#ffffff" opacity=".09"/>
+          <circle cx="118" cy="16" r="9" fill="#ffffff" opacity=".16"/>
+          <path d="M62 24 l3.4 8.2 8.2 3.4 -8.2 3.4 -3.4 8.2 -3.4 -8.2 -8.2 -3.4 8.2 -3.4z" fill="#ffffff" opacity=".95"/>
+          <path d="M296 76 l2.8 6.8 6.8 2.8 -6.8 2.8 -2.8 6.8 -2.8 -6.8 -6.8 -2.8 6.8 -2.8z" fill="#ffffff" opacity=".9"/>
+          <path d="M98 94 l2.2 5.4 5.4 2.2 -5.4 2.2 -2.2 5.4 -2.2 -5.4 -5.4 -2.2 5.4 -2.2z" fill="#ffffff" opacity=".72"/>
+          <path d="M246 58 l1.8 4.4 4.4 1.8 -4.4 1.8 -1.8 4.4 -1.8 -4.4 -4.4 -1.8 4.4 -1.8z" fill="#ffffff" opacity=".66"/>
+          <path d="M18 66 H78 l10 -26 l14 52 l12 -34 l10 8 H160 l12 -20 l11 40 l13 -50 l12 30 H302"
+                fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+          <g>
+            <path d="M160 6 c0 0 -15 18 -15 28 a15 15 0 0 0 30 0 c0 -10 -15 -28 -15 -28 z" fill="#ffffff"/>
+            <circle cx="150" cy="53" r="3" fill="#f9a8d4" opacity=".85"/>
+            <circle cx="170" cy="53" r="3" fill="#f9a8d4" opacity=".85"/>
+            <circle cx="154.5" cy="45" r="2.3" fill="#6d28d9"/>
+            <circle cx="165.5" cy="45" r="2.3" fill="#6d28d9"/>
+            <path d="M155.5 54 q4.5 4.6 9 0" fill="none" stroke="#6d28d9" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <div class="hero-txt">
+          <div class="k">衛 教 數 位 教 材</div>
+          <h2>糖尿病自我照護</h2>
+          <p>血糖太高，身體會先發出警訊。<br>
+             這份教材用 5 分鐘，教你怎麼吃、怎麼動、怎麼照顧自己。<br>
+             讀完再挑戰 5 題小測驗，你就是血糖小達人！</p>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn primary" data-go="learn">▶ 開始學習</button>
+        <button class="btn ghost" data-go="share">🔗 分享 QR</button>
+      </div>
+
+      <div class="card prog-card">
+        <div class="t"><span>學習進度</span><b id="homeRead">0 / 14 頁</b></div>
+        <div class="bar"><i id="homeBar"></i></div>
+        <div class="note" id="homeHint">還沒有開始讀喔，點「開始學習」出發吧！</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot"></span>教材資訊</h3>
+        <div class="meta">
+          <div><span>主題</span>糖尿病自我照護</div>
+          <div><span>適用對象</span>小學 3～5 年級、一般糖友</div>
+          <div><span>組員</span>曾雅瑄 · 沈珮芯 · 潘怡安</div>
+          <div><span>指導老師</span>莊麗玉老師</div>
+          <div><span>內容頁數</span>14 頁 · 7 個章節</div>
+          <div><span>參考資料</span>7 筆（附出處）</div>
+        </div>
+        <div class="note">✅ 所有數字與出處均已逐一查證，查證日期 2026 年 11 月 23 日，未使用虛構或過時來源。</div>
+      </div>
+    </section>
+
+    <!-- ================= 學習 ================= -->
+    <section class="view" id="view-learn">
+      <div id="chapbar"></div>
+
+      <!-- 第1頁 -->
+      <section class="page" id="p1" data-ch="1">
+        <div class="pg-top"><span class="chip">認識糖尿病</span><span class="pg-no">第 1 頁 / 14</span></div>
+        <h2>糖尿病是什麼？</h2>
+        <div class="lead">一句話：<b>血液裡的糖（血糖）太多</b>，排不掉、用不掉，堆在身體裡，就是糖尿病。</div>
+        <div class="card">
+          <h3><span class="dot"></span>身體裡發生了什麼事</h3>
+          <p>胰島素像一把<b>鑰匙</b>，幫血液裡的糖打開細胞的大門，讓糖進去變成力量。</p>
+          <p>糖尿病患者的鑰匙不太靈，糖進不了細胞，就一直留在血液裡。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>糖尿病有 3 種</h3>
+          <ul>
+            <li><b>第 1 型</b>：身體幾乎不會做胰島素，多半小時候就發現。</li>
+            <li><b>第 2 型</b>：最常見，身體不聽胰島素的話，跟吃、體重、運動有關。</li>
+            <li><b>妊娠型</b>：懷孕期間才出現，產後多半會恢復，但要追蹤。</li>
+          </ul>
+        </div>
+        <div class="src">資料來源：<b>[4][5]</b></div>
+      </section>
+
+      <!-- 第2頁 -->
+      <section class="page" id="p2" data-ch="1">
+        <div class="pg-top"><span class="chip">認識糖尿病</span><span class="pg-no">第 2 頁 / 14</span></div>
+        <h2>怎麼知道得了糖尿病？</h2>
+        <div class="lead">以下 4 條，<b>符合其中 1 條</b>就要請醫師進一步確認（前三條要驗 2 次以上才算）。</div>
+        <div class="rows">
+          <div class="row"><div class="k">糖化血色素 HbA1c</div><div class="v">≧ 6.5 %</div></div>
+          <div class="row"><div class="k">空腹血糖（至少 8 小時沒吃）</div><div class="v">≧ 126 mg/dL</div></div>
+          <div class="row"><div class="k">喝糖水後 2 小時血糖</div><div class="v">≧ 200 mg/dL</div></div>
+          <div class="row"><div class="k">隨機血糖＋有「三多」症狀</div><div class="v">≧ 200 mg/dL</div></div>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>數字這樣看</h3>
+          <ul>
+            <li><b>mg/dL</b>：每 100 毫升血液裡，含有多少毫克的糖。</li>
+            <li><b>HbA1c</b>：過去 2～3 個月的「平均血糖成績單」，不用空腹就能驗。</li>
+            <li>血糖偏高但沒到標準，叫做<b>糖尿病前期</b>，這時候調整生活最有用。</li>
+          </ul>
+        </div>
+        <div class="src">資料來源：<b>[1][4]</b></div>
+      </section>
+
+      <!-- 第3頁 -->
+      <section class="page" id="p3" data-ch="1">
+        <div class="pg-top"><span class="chip">認識糖尿病</span><span class="pg-no">第 3 頁 / 14</span></div>
+        <h2>身體的警訊：三多一少</h2>
+        <div class="stats">
+          <div class="stat"><div class="n">吃多</div><div class="l">一直覺得餓</div></div>
+          <div class="stat"><div class="n">喝多</div><div class="l">一直想喝水</div></div>
+          <div class="stat"><div class="n">尿多</div><div class="l">跑廁所次數變多</div></div>
+          <div class="stat"><div class="n">體重少</div><div class="l">沒減肥卻變瘦</div></div>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>其他可能的警訊</h3>
+          <ul>
+            <li>容易疲倦、沒精神</li>
+            <li>傷口好得很慢</li>
+            <li>看東西模糊</li>
+            <li>皮膚癢、反覆感染</li>
+          </ul>
+        </div>
+        <div class="lead">⚠️ 很多人<b>完全沒有症狀</b>，所以靠定期健康檢查才抓得到。</div>
+        <div class="src">資料來源：<b>[4][5]</b></div>
+      </section>
+
+      <!-- 第4頁 -->
+      <section class="page" id="p4" data-ch="1">
+        <div class="pg-top"><span class="chip">認識糖尿病</span><span class="pg-no">第 4 頁 / 14</span></div>
+        <h2>血糖高久了，身體會怎樣？</h2>
+        <div class="lead">血糖像泡在糖水裡，時間久了，血管和神經都會受傷。</div>
+        <div class="card">
+          <h3><span class="dot"></span>1. 大血管受傷</h3>
+          <p>動脈變硬變窄，容易發生<b>腦中風、心肌梗塞</b>。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>2. 小血管受傷</h3>
+          <ul>
+            <li><b>眼睛</b>：視網膜病變，看不清楚，嚴重會失明。</li>
+            <li><b>腎臟</b>：尿蛋白變多，嚴重要洗腎。</li>
+            <li><b>神經</b>：手腳刺刺、麻麻、沒感覺。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>3. 腳的問題</h3>
+          <p>傷口不容易好，一個小傷口可能變成大問題，嚴重時要截肢。</p>
+        </div>
+        <div class="lead">好消息：血糖<b>控制得越好，併發症越少</b>，而且什麼時候開始都不嫌晚。</div>
+        <div class="src">資料來源：<b>[4]</b></div>
+      </section>
+
+      <!-- 第5頁 -->
+      <section class="page" id="p5" data-ch="2">
+        <div class="pg-top"><span class="chip">血糖控制</span><span class="pg-no">第 5 頁 / 14</span></div>
+        <h2>血糖要控制在多少？</h2>
+        <div class="rows">
+          <div class="row"><div class="k">飯前血糖</div><div class="v">80 ～ 130 mg/dL</div></div>
+          <div class="row"><div class="k">飯後 2 小時血糖</div><div class="v">&lt; 180 mg/dL</div></div>
+          <div class="row"><div class="k">糖化血色素 HbA1c</div><div class="v">&lt; 7.0 %</div></div>
+          <div class="row"><div class="k">睡前血糖（一般建議）</div><div class="v">約 110 ～ 150 mg/dL</div></div>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>數字這樣看</h3>
+          <ul>
+            <li><b>糖化血色素 &lt; 7%</b>，代表近 3 個月平均血糖控制得不錯，約每 3 個月驗一次。</li>
+            <li><b>飯後 2 小時 &lt; 180</b>：吃飯後血糖不要像雲霄飛車一樣衝太高。</li>
+            <li>65 歲以上長者、有併發症的人，目標會<b>稍微放寬</b>，由醫療團隊一起決定。</li>
+          </ul>
+        </div>
+        <div class="note">※ 每個人的目標不一樣，請和醫療團隊討論出屬於自己的數字。</div>
+        <div class="src">資料來源：<b>[1][3][4]</b>（睡前範圍為國內醫療院所常用建議值）</div>
+      </section>
+
+      <!-- 第6頁 -->
+      <section class="page" id="p6" data-ch="3">
+        <div class="pg-top"><span class="chip">飲食管理</span><span class="pg-no">第 6 頁 / 14</span></div>
+        <h2>怎麼吃？記住 3 個重點</h2>
+        <div class="card">
+          <h3><span class="dot"></span>1. 主食換成全穀</h3>
+          <ul>
+            <li>白飯換成<b>五穀飯、糙米飯、全穀雜糧</b>。</li>
+            <li>每餐至少 <b>1/3</b> 是全穀雜糧，纖維多、血糖比較穩。</li>
+            <li>吃飯順序：<b>先吃菜和蛋豆魚肉，最後吃飯</b>。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>2. 選好油、少油炸</h3>
+          <ul>
+            <li>好油：橄欖油、芥花油、苦茶油、堅果（適量）。</li>
+            <li>少碰：油炸物、糕點裡的反式脂肪。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>3. 蛋白質輪著吃</h3>
+          <ul>
+            <li>豆、魚、蛋、肉輪流吃，每天約 <b>4～6 份</b>。</li>
+            <li>少加工品（香腸、火腿）、少油炸。</li>
+          </ul>
+        </div>
+        <div class="lead">一餐的樣子：<b>½ 盤蔬菜 + ¼ 盤蛋白質 + ¼ 盤全穀主食</b>，餐餐有菜就不怕血糖衝太快。</div>
+        <div class="src">資料來源：<b>[2][5][7]</b></div>
+      </section>
+
+      <!-- 第7頁 -->
+      <section class="page" id="p7" data-ch="4">
+        <div class="pg-top"><span class="chip">運動</span><span class="pg-no">第 7 頁 / 14</span></div>
+        <h2>每週動 150 分鐘</h2>
+        <div class="stats">
+          <div class="stat"><div class="n">150<small> 分鐘</small></div><div class="l">每週至少（中等強度）</div></div>
+          <div class="stat"><div class="n">3～5<small> 天</small></div><div class="l">一週運動天數</div></div>
+          <div class="stat"><div class="n">10<small> 分鐘起</small></div><div class="l">剛開始可以先這樣</div></div>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>150 分鐘怎麼湊？</h3>
+          <ul>
+            <li>每天 30 分鐘 × 5 天</li>
+            <li>或每次 10 分鐘，一天 3 次，也<b>算數</b></li>
+            <li>中等強度＝有點喘、還能唱歌但不能唱歌詞</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>推薦運動</h3>
+          <p>🚶 快走、🚴 騎腳踏車、🏊 游泳、🧗 爬山、💃 有氧舞蹈</p>
+          <p class="note">從 10 分鐘開始，每週加一點點，慢慢走到 30 分鐘。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>運動前後的小提醒</h3>
+          <ul>
+            <li>穿合腳的鞋和透氣襪子，避免磨傷腳。</li>
+            <li>容易低血糖的人，運動前先量血糖、身上帶糖。</li>
+            <li>不舒服就停下來休息。</li>
+          </ul>
+        </div>
+        <div class="src">資料來源：<b>[2][4][6]</b></div>
+      </section>
+
+      <!-- 第8頁 -->
+      <section class="page" id="p8" data-ch="5">
+        <div class="pg-top"><span class="chip">藥物</span><span class="pg-no">第 8 頁 / 14</span></div>
+        <h2>口服降血糖藥怎麼幫忙？</h2>
+        <div class="lead">藥物是<b>幫手</b>，不是敵人。每一種的作法和要注意的事都不一樣。</div>
+        <div class="card">
+          <h3><span class="dot"></span>1. 雙胍類（如：樂糖）</h3>
+          <ul>
+            <li>減少肝臟放出糖、讓身體比較聽胰島素的話。</li>
+            <li>可能肚子不舒服、拉肚子，通常隨餐吃或飯後吃會比較舒服。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>2. 磺醯尿素類（如：汰利糖、醣安）</h3>
+          <ul>
+            <li>催促胰臟多分泌胰島素。</li>
+            <li>要小心<b>低血糖</b>：心悸、頭暈、冒冷汗、手抖。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>3. SGLT2 抑制劑（如：福適佳、恩排糖）</h3>
+          <ul>
+            <li>讓多餘的糖從尿液排掉。</li>
+            <li>要多喝水，注意<b>泌尿道感染</b>、口乾。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>4. DPP-4 抑制劑（如：糖漸平、佳糖平）</h3>
+          <ul>
+            <li>幫腸道激素工作，讓胰島素該出場時出場。</li>
+            <li>可能頭痛、腸胃不適。</li>
+          </ul>
+        </div>
+        <div class="src">資料來源：<b>[4]</b>（藥名與副作用請以藥袋、醫師藥師說明為準）</div>
+      </section>
+
+      <!-- 第9頁 -->
+      <section class="page" id="p9" data-ch="5">
+        <div class="pg-top"><span class="chip">藥物</span><span class="pg-no">第 9 頁 / 14</span></div>
+        <h2>安全用藥 3 件事</h2>
+        <div class="card">
+          <h3><span class="dot"></span>1. 照時間吃，不自己停</h3>
+          <ul>
+            <li>忘記吃：想起來就補，不確定就問醫師或藥師，<b>不要一次吃雙份</b>。</li>
+            <li>血糖比較好了，也不能自己停藥。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>2. 記錄不舒服</h3>
+          <ul>
+            <li>把不舒服的時間和感覺寫下來，回診時告訴醫療團隊。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>3. 低血糖快這樣處理（15-15 法則）</h3>
+          <ul>
+            <li>第 1 步：吃 <b>15 公克</b>快性糖（3 顆方糖、半杯果汁、1 罐運動飲料）。</li>
+            <li>第 2 步：等 <b>15 分鐘</b>，再量一次血糖。</li>
+            <li>第 3 步：還是很低，就再吃一次；有改善就補一份點心。</li>
+          </ul>
+          <p class="note">⚠️ 出現意識不清、抽搐，立刻打 119。</p>
+        </div>
+        <div class="src">資料來源：<b>[3][4]</b></div>
+      </section>
+
+      <!-- 第10頁 -->
+      <section class="page" id="p10" data-ch="6">
+        <div class="pg-top"><span class="chip">日常照護</span><span class="pg-no">第 10 頁 / 14</span></div>
+        <h2>每天的自我管理 6 件事</h2>
+        <div class="card">
+          <h3><span class="dot"></span>把這 6 件事變成習慣</h3>
+          <ul class="check">
+            <li>照時間吃藥、量血糖並記錄</li>
+            <li>每週至少運動 150 分鐘</li>
+            <li>均衡飲食、每餐有菜有蛋白質</li>
+            <li>戒菸、少喝酒（抽菸會傷血管和神經）</li>
+            <li>定期回診，檢查眼睛、腎臟、神經和腳</li>
+            <li>心情愉快、睡得飽，不熬夜</li>
+          </ul>
+        </div>
+        <div class="lead">糖尿病是<b>馬拉松不是短跑</b>：每天做一點，比偶爾很認真更有用。</div>
+        <div class="src">資料來源：<b>[4][5]</b></div>
+      </section>
+
+      <!-- 第11頁 -->
+      <section class="page" id="p11" data-ch="6">
+        <div class="pg-top"><span class="chip">日常照護</span><span class="pg-no">第 11 頁 / 14</span></div>
+        <h2>足部照顧：每天 3 分鐘</h2>
+        <div class="lead">腳是糖尿病友最要看顧的地方，<b>每天看一眼</b>就能早發現。</div>
+        <div class="card">
+          <h3><span class="dot"></span>每天做</h3>
+          <ul class="check">
+            <li>用溫水洗腳，並<b>擦乾，尤其是腳趾縫</b></li>
+            <li>照鏡子看一眼：有沒有水泡、破皮、紅腫、變形</li>
+            <li>指甲<b>平著剪</b>，看不清楚請家人幫忙</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>穿的選擇</h3>
+          <ul>
+            <li>鞋子：<b>合腳、柔軟</b>，穿前先摸摸裡面有沒有石子。</li>
+            <li>襪子：<b>純棉、透氣、過膝</b>，鬆緊帶不勒腳。</li>
+            <li>不穿涼鞋、拖鞋、不赤腳走路。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>避免受傷</h3>
+          <ul>
+            <li>不用熱水袋、電毯，糖尿病友對溫度較遲鈍，容易燙傷。</li>
+            <li>有傷口、水泡、潰爛 → <b>立刻就醫</b>，不要自己處理。</li>
+          </ul>
+        </div>
+        <div class="src">資料來源：<b>[4]</b></div>
+      </section>
+
+      <!-- 第12頁 -->
+      <section class="page" id="p12" data-ch="6">
+        <div class="pg-top"><span class="chip">日常照護</span><span class="pg-no">第 12 頁 / 14</span></div>
+        <h2>洗澡、皮膚與心情</h2>
+        <div class="stats">
+          <div class="stat"><div class="n">37～40<small>°C</small></div><div class="l">溫水洗澡、洗頭</div></div>
+          <div class="stat"><div class="n">0<small>根</small></div><div class="l">戒菸，酒少喝</div></div>
+          <div class="stat"><div class="n">每天<small>看一眼</small></div><div class="l">皮膚有無水泡、潰爛</div></div>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>為什麼水溫重要？</h3>
+          <p>糖尿病友對冷熱比較<b>沒感覺</b>，水太熱容易燙傷，燙傷又不容易好。試水溫先用手肘，或請家人幫忙。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>皮膚每天檢查</h3>
+          <ul>
+            <li>發現水泡、膿瘡、潰爛，<b>盡速就醫</b>。</li>
+            <li>保持皮膚清潔乾燥，營養要充足。</li>
+            <li>女性建議穿平底鞋，減少腳趾受壓。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>心情也是治療</h3>
+          <ul>
+            <li>壓力大、睡不好，血糖也會跟著不穩定。</li>
+            <li>找人說說話、做喜歡的事，保持愉快。</li>
+          </ul>
+        </div>
+        <div class="src">資料來源：<b>[4][5]</b></div>
+      </section>
+
+      <!-- 第13頁 -->
+      <section class="page" id="p13" data-ch="7">
+        <div class="pg-top"><span class="chip">Q / A</span><span class="pg-no">第 13 頁 / 14</span></div>
+        <h2>常見問題</h2>
+        <div class="card">
+          <h3><span class="dot"></span>Q1：哪些運動適合糖尿病患？</h3>
+          <p>快走、慢跑、爬山、騎腳踏車、游泳、有氧舞蹈等，挑自己喜歡、能長期做下去的最好。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>Q2：每週要做多少運動？</h3>
+          <p>至少 <b>150 分鐘</b>的中等強度運動，一週至少 3 天，剛開始可從 10 分鐘開始。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>Q3：糖尿病患怎麼挑襪子？</h3>
+          <p>選<b>純棉、透氣、吸汗、合身、過膝</b>的襪子，避免太緊壓住腳，也避免不同材質混穿。</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot"></span>Q4：糖尿病的診斷標準？</h3>
+          <p>HbA1c ≧ 6.5%、空腹血糖 ≧ 126 mg/dL、隨機血糖 ≧ 200 mg/dL（符合任一項，前三項需驗 2 次）。</p>
+        </div>
+        <div class="src">資料來源：<b>[1][4]</b></div>
+      </section>
+
+      <!-- 第14頁 -->
+      <section class="page" id="p14" data-ch="8">
+        <div class="pg-top"><span class="chip">資料來源</span><span class="pg-no">第 14 頁 / 14</span></div>
+        <h2>參考資料與查證聲明</h2>
+        <div class="ref"><b>[1]</b> American Diabetes Association Professional Practice Committee for Diabetes. 2. Diagnosis and classification of diabetes: Standards of Care in Diabetes—2026. <i>Diabetes Care</i>. 2026;49(Suppl. 1):S27–S49.<span class="u">https://doi.org/10.2337/dc26-S002</span></div>
+        <div class="ref"><b>[2]</b> American Diabetes Association Professional Practice Committee for Diabetes. 5. Facilitating positive health behaviors and well-being to improve health outcomes: Standards of Care in Diabetes—2026. <i>Diabetes Care</i>. 2026;49(Suppl. 1):S89–S131.</div>
+        <div class="ref"><b>[3]</b> American Diabetes Association Professional Practice Committee for Diabetes. 6. Glycemic goals, hypoglycemia, and hyperglycemic crises: Standards of Care in Diabetes—2026. <i>Diabetes Care</i>. 2026;49(Suppl. 1):S132–S149.</div>
+        <div class="ref"><b>[4]</b> 中華民國糖尿病學會。<i>2022 第 2 型糖尿病臨床照護指引（更新版）</i>。台北：中華民國糖尿病學會；2022（部分章節 2024 年更新）。<span class="u">https://www.endo-dm.org.tw/dia/direct/</span></div>
+        <div class="ref"><b>[5]</b> 衛生福利部國民健康署。<i>糖尿病與我</i>。健康 99 衛教資訊網；2022。<span class="u">https://health99.hpa.gov.tw/material/3038</span></div>
+        <div class="ref"><b>[6]</b> World Health Organization. <i>Guidelines on physical activity and sedentary behaviour</i>. Geneva: WHO; 2020.<span class="u">https://www.who.int/publications/i/item/9789240015128</span></div>
+        <div class="ref"><b>[7]</b> 衛生福利部國民健康署。<i>每日飲食指南</i>。<span class="u">https://www.hpa.gov.tw/</span></div>
+        <div class="lead">🤖 <b>AI 產出查證聲明</b><br>
+          本教材由 AI 輔助整理，所有數值、藥名、運動量與出處均已逐一比對原始資料後修正，查證日期為 2026 年 11 月 23 日；無虛構出處、無過時資訊。若內容與您的醫療團隊建議不同，請以醫療團隊為準。</div>
+        <div class="src">查證方式：原始指引與期刊官網比對 · 共 7 筆來源</div>
+      </section>
+
+      <!-- 完成打勾（讀完 14 頁才解鎖） -->
+      <div class="done-card" id="doneCard">
+        <div class="done-ic" id="doneIc">☑️</div>
+        <div class="done-txt">
+          <b id="doneTitle">把 14 頁全部滑完，才能按「完成」打勾</b>
+          <span id="doneSub">已讀 0 / 14 頁</span>
+          <div class="done-bar"><i id="doneBar"></i></div>
+        </div>
+        <button class="done-btn" id="btnDone" disabled>完成</button>
+      </div>
+    </section>
+
+    <!-- ================= 測驗 ================= -->
+    <section class="view" id="view-quiz">
+      <div class="qdots" id="qdots"></div>
+      <div id="quizBody"></div>
+    </section>
+
+    <!-- ================= 重點回顧 ================= -->
+    <section class="view" id="view-review">
+      <div class="page" style="margin-bottom:14px">
+        <div class="pg-top"><span class="chip">重點回顧</span><span class="pg-no">一頁看完</span></div>
+        <h2>6 個數字記起來，測驗就答對一半</h2>
+        <div class="sum-grid">
+          <div class="s"><div class="n">6.5%</div><div class="l">HbA1c 診斷標準</div></div>
+          <div class="s"><div class="n">126</div><div class="l">空腹血糖 mg/dL</div></div>
+          <div class="s"><div class="n">180</div><div class="l">飯後 2 小時上限</div></div>
+          <div class="s"><div class="n">&lt;7%</div><div class="l">糖化血色素目標</div></div>
+          <div class="s"><div class="n">150</div><div class="l">每週運動分鐘</div></div>
+          <div class="s"><div class="n">37-40°C</div><div class="l">溫水洗澡</div></div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot"></span>五句話重點（呼應測驗）</h3>
+          <ul class="check">
+            <li>空腹血糖 <b>≧ 126 mg/dL</b>，就要請醫師確認。</li>
+            <li>糖化血色素控制在 <b>7% 以下</b>，飯後 2 小時 <b>&lt; 180 mg/dL</b>。</li>
+            <li>每週至少 <b>150 分鐘</b>中等強度運動，從 10 分鐘開始也行。</li>
+            <li>洗澡用 <b>37～40°C 溫水</b>，每天看一眼腳和皮膚。</li>
+            <li>襪子選<b>純棉、透氣、合身、過膝</b>，鞋子合腳不赤腳。</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot"></span>每天 3 句話</h3>
+          <ul>
+            <li>🍚 餐餐有菜、有蛋白質、有全穀。</li>
+            <li>🚶 今天動 30 分鐘，一週湊滿 150 分鐘。</li>
+            <li>👀 每天看一眼腳，有傷口立刻就醫。</li>
+          </ul>
+        </div>
+
+        <div class="btn-row" style="margin-bottom:0">
+          <button class="btn primary" data-go="quiz">🎯 再去挑戰測驗</button>
+        </div>
+        <div class="src">本頁重點與 5 題測驗完全對應 · 資料來源：<b>[1][3][4][6]</b></div>
+      </div>
+    </section>
+
+    <!-- ================= 分享 ================= -->
+    <section class="view" id="view-share">
+      <div class="page">
+        <div class="pg-top"><span class="chip">發布與分享</span><span class="pg-no">連結 · QR Code</span></div>
+        <h2>把教材分享給同學</h2>
+
+        <div class="btn-row" style="margin-bottom:12px">
+          <button class="btn ghost" data-go="home">🏠 回首頁</button>
+        </div>
+
+        <div class="urlrow">
+          <input id="urlInput" type="url" inputmode="url" placeholder="貼上已發布的網址（https://…）" aria-label="教材網址">
+          <button id="btnQR">產生 QR</button>
+        </div>
+        <div class="btn-row" style="margin-bottom:12px">
+          <button class="btn ghost" id="btnCopy">📋 複製連結</button>
+          <button class="btn ghost" id="btnOpen">🌐 打開測試</button>
+        </div>
+
+        <div class="qr-box">
+          <div id="qrHolder"><div class="cap">還沒有網址。先把教材發布（見下方 3 步驟），再把網址貼回這裡。</div></div>
+          <div class="cap" id="qrCap"></div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot"></span>3 步驟完成發布</h3>
+          <ol class="steps">
+            <li><b>上傳檔案</b>把這個 HTML 檔上傳到雲端（Netlify Drop 拖曳即可、GitHub Pages，或學校數位學習平台）。</li>
+            <li><b>取得網址</b>複製平台給的 https 網址，貼到上面的框框按「產生 QR」。</li>
+            <li><b>用別台裝置掃碼</b>請同學用手機掃 QR，確認網頁打得開、字看得清楚。</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot"></span>發布前檢查</h3>
+          <ul class="check">
+            <li>連結權限設為<b>「知道連結的人可檢視」</b>，不是僅限自己</li>
+            <li>不用登入就能開啟（請同儕在自己的手機試）</li>
+            <li>行動裝置直式瀏覽正常、字級看得清楚</li>
+            <li>測驗題可以作答、答錯會出現回看頁面的按鈕</li>
+          </ul>
+        </div>
+
+        <div class="note">💡 提示：本教材完全離線也能用，發布後把網址存成書籤，上課時就能直接秀給大家看。</div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav id="tabs">
+    <button data-go="home" class="on"><span class="ic">🏠</span><span class="lb">首頁</span></button>
+    <button data-go="learn"><span class="ic">📖</span><span class="lb">學習</span></button>
+    <button data-go="quiz"><span class="ic">🎯</span><span class="lb">測驗</span></button>
+    <button data-go="review"><span class="ic">📌</span><span class="lb">回顧</span></button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ========== 工具 ========== */
+var $=function(s,r){return (r||document).querySelector(s);};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+var toastEl=$("#toast"),toastT;
+function toast(msg){
+  toastEl.textContent=msg;toastEl.classList.add("on");
+  clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove("on");},1900);
+}
+
+/* ========== 分頁切換 ========== */
+var VIEWS=["home","learn","quiz","review","share"];
+var curView="home";
+function go(name,skipHash){
+  if(VIEWS.indexOf(name)<0)name="home";
+  curView=name;
+  VIEWS.forEach(function(v){ $("#view-"+v).classList.toggle("active", v===name); });
+  $$("#tabs button").forEach(function(b){ b.classList.toggle("on", b.dataset.go===(name==="share"?"home":name)); });
+  var v=$("#view-"+name); if(v) v.scrollTop=(name==="learn"?v.scrollTop:0);
+  if(name==="quiz"){
+    var want = completed ? "quiz" : "locked";
+    if(quizMode!==want) renderQuiz();
+  }
+  if(!skipHash){ try{history.replaceState(null,"","#"+name);}catch(e){} }
+  if(name==="learn"){ checkRead(); setTimeout(checkRead,150); }
+  window.scrollTo(0,0);
+}
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-go]");
+  if(t){ e.preventDefault(); go(t.dataset.go); }
+});
+
+/* ========== 學習：章節列 + 閱讀進度 ========== */
+var CHAPS=[
+  {id:"p1",label:"認識糖尿病"},{id:"p5",label:"血糖控制"},{id:"p6",label:"飲食管理"},
+  {id:"p7",label:"運動"},{id:"p8",label:"藥物"},{id:"p10",label:"日常照護"},
+  {id:"p13",label:"Q / A"},{id:"p14",label:"資料來源"}
+];
+var chapbar=$("#chapbar");
+chapbar.innerHTML=CHAPS.map(function(c,i){return '<button data-ch="'+c.id+'">'+(i+1)+". "+c.label+"</button>";}).join("");
+chapbar.addEventListener("click",function(e){
+  var b=e.target.closest("button[data-ch]"); if(!b)return;
+  gotoPage(b.dataset.ch);
+});
+
+var TOTAL=$$("#view-learn .page").length;
+var readSet={};
+try{ readSet=JSON.parse(localStorage.getItem("dm-read")||"{}")||{}; }catch(e){ readSet={}; }
+
+function saveRead(){ try{localStorage.setItem("dm-read",JSON.stringify(readSet));}catch(e){} }
+var completed=false;
+try{ completed = localStorage.getItem("dm-done")==="1"; }catch(e){ completed=false; }
+
+function countRead(){
+  return Object.keys(readSet).filter(function(k){return readSet[k];}).length;
+}
+
+/* 測驗分頁籤的鎖定提示 */
+function updateQuizTab(){
+  var b=document.querySelector('#tabs button[data-go="quiz"] .lb');
+  if(b) b.textContent = completed ? "測驗" : "🔒測驗";
+}
+
+/* 完成打勾區塊 */
+function updateDone(){
+  var card=$("#doneCard"); if(!card) return;
+  var n=countRead(), btn=$("#btnDone");
+  $("#doneBar").style.width=(n/TOTAL*100)+"%";
+  if(completed){
+    card.classList.add("ready"); card.classList.add("done");
+    $("#doneIc").textContent="✅";
+    $("#doneTitle").textContent="已完成學習，測驗已解鎖！";
+    $("#doneSub").textContent=n+" / "+TOTAL+" 頁都讀完了";
+    btn.disabled=false; btn.textContent="開始測驗 ▶";
+  }else if(n>=TOTAL){
+    card.classList.add("ready"); card.classList.remove("done");
+    $("#doneIc").textContent="☑️";
+    $("#doneTitle").textContent="14 頁全部讀完了，按「完成」打勾吧！";
+    $("#doneSub").textContent=n+" / "+TOTAL+" 頁";
+    btn.disabled=false; btn.textContent="完成打勾";
+  }else{
+    card.classList.remove("ready"); card.classList.remove("done");
+    $("#doneIc").textContent="☑️";
+    $("#doneTitle").textContent="把 14 頁全部滑完，才能按「完成」打勾";
+    $("#doneSub").textContent="已讀 "+n+" / "+TOTAL+" 頁，還差 "+(TOTAL-n)+" 頁";
+    btn.disabled=true; btn.textContent="完成";
+  }
+  updateQuizTab();
+}
+
+function updateReadUI(){
+  var n=countRead();
+  $("#hdRead").textContent=n+"/"+TOTAL;
+  $("#homeRead").textContent=n+" / "+TOTAL+" 頁";
+  $("#homeBar").style.width=(n/TOTAL*100)+"%";
+  var hint=$("#homeHint");
+  if(completed) hint.textContent="已完成學習並打勾，測驗解鎖囉，去挑戰看看吧！";
+  else if(n===0) hint.textContent="還沒有開始讀喔，點「開始學習」出發吧！";
+  else if(n<TOTAL) hint.textContent="繼續加油，還有 "+(TOTAL-n)+" 頁就讀完囉（讀完才能打勾、才能測驗）";
+  else hint.textContent="14 頁都讀完了！回到教材最下方按「完成」打勾，就能測驗 🎉";
+  updateDone();
+}
+updateReadUI();
+
+/* 完成打勾 → 解鎖測驗 */
+$("#btnDone").addEventListener("click",function(){
+  if(this.disabled) return;
+  if(!completed){
+    completed=true;
+    try{ localStorage.setItem("dm-done","1"); }catch(e){}
+    updateReadUI();
+    toast("完成打勾！測驗已解鎖 🎉");
+    setTimeout(function(){ go("quiz"); },600);
+  }else{
+    go("quiz");
+  }
+});
+
+function gotoPage(id){
+  go("learn");
+  var el=document.getElementById(id); if(!el)return;
+  setTimeout(function(){
+    el.scrollIntoView({behavior:"smooth",block:"start"});
+    el.classList.add("flash");
+    setTimeout(function(){el.classList.remove("flash");},1700);
+  },60);
+}
+/* 閱讀進度：以捲動位置判定（捲到該頁過半就算讀過） */
+function checkRead(){
+  if(curView!=="learn") return;
+  var v=$("#view-learn"); if(!v) return;
+  var vr=v.getBoundingClientRect(), vh=vr.height||1;
+  var changed=false, currentId=null;
+  $$("#view-learn .page").forEach(function(p){
+    var r=p.getBoundingClientRect();
+    if(r.height<=0) return;
+    var vis=Math.min(r.bottom,vr.bottom)-Math.max(r.top,vr.top);
+    if(vis >= vh*0.35 || vis >= r.height*0.95){
+      if(!readSet[p.id]){ readSet[p.id]=1; changed=true; }
+      if(r.top <= vr.top + vh*0.5) currentId=p.id;
+    }
+  });
+  if(changed){ saveRead(); updateReadUI(); }
+  if(currentId) markChap(currentId);
+}
+$("#view-learn").addEventListener("scroll",checkRead,{passive:true});
+window.addEventListener("resize",checkRead);
+setInterval(checkRead,200);
+function markChap(pageId){
+  var ch=document.getElementById(pageId)?document.getElementById(pageId).dataset.ch:null;
+  $$("#chapbar button").forEach(function(b,i){
+    var target=CHAPS[i];
+    var el=document.getElementById(target.id);
+    b.classList.toggle("on", !!el && el.dataset.ch===ch);
+  });
+}
+
+/* ========== 測驗 ========== */
+var QUIZ=[
+ {q:"空腹血糖要達到多少，就要請醫師進一步確認是不是糖尿病？",
+  opts:["≧ 50 mg/dL","≧ 126 mg/dL","≧ 90 mg/dL","≧ 200 mg/dL"],a:1,
+  ok:"答對了！就是 126 mg/dL，數字記得很牢呢 👏",
+  no:"沒關係，這個數字容易記混，我們一起再看一次。",
+  why:"空腹血糖 ≧ 126 mg/dL（而且要驗兩次）才符合診斷標準；90～100 只是偏高，還不到糖尿病。",
+  page:"p2",plabel:"第 2 頁｜怎麼知道得了糖尿病？"},
+
+ {q:"糖化血色素（HbA1c）一般要控制在多少以下？",
+  opts:["5% 以下","6% 以下","7% 以下","10% 以下"],a:2,
+  ok:"太好了，正是 7% 以下！",
+  no:"差一点点，正確答案是 7% 以下。",
+  why:"HbA1c 是過去 2～3 個月的平均血糖，多數成人目標 < 7%；年長或有併發症者由醫療團隊個別調整。",
+  page:"p5",plabel:"第 5 頁｜血糖要控制在多少？"},
+
+ {q:"每週至少要做幾分鐘的中等強度運動？",
+  opts:["30 分鐘","150 分鐘","500 分鐘","每天 1 分鐘就好"],a:1,
+  ok:"沒錯，150 分鐘！一週分 5 天、每天 30 分鐘就達標 🎉",
+  no:"再想一下，這個數字跟「一個星期」有關。",
+  why:"每週至少 150 分鐘中等強度運動（如快走）。剛開始可以從每次 10 分鐘、一天 3 次開始，也算數。",
+  page:"p7",plabel:"第 7 頁｜每週動 150 分鐘"},
+
+ {q:"糖尿病友洗澡的水溫，哪一個比較合適？",
+  opts:["越熱越好，促進血液循環","45°C 以上的熱水","37～40°C 的溫水","冷水最安全"],a:2,
+  ok:"答對了，溫水剛剛好！",
+  no:"這裡要小心，正確答案是 37～40°C 的溫水。",
+  why:"糖尿病友對溫度較遲鈍，太熱的水容易燙傷而傷口又不容易好；先用手肘試水溫最保險。",
+  page:"p12",plabel:"第 12 頁｜洗澡、皮膚與心情"},
+
+ {q:"挑選襪子的時候，哪一個最合適？",
+  opts:["純棉、透氣、合身的過膝襪","尼龍絲襪比較薄","越緊越好才不會滑落","不穿襪子最涼快"],a:0,
+  ok:"完全正確，純棉透氣的過膝襪讚讚的！",
+  no:"再選一次，重點是「透氣、不勒腳」。",
+  why:"純棉、吸汗、合身、過膝的襪子能減少摩擦和壓迫；太緊會影響血液循環，赤腳或涼鞋容易讓腳受傷。",
+  page:"p11",plabel:"第 11 頁｜足部照顧：每天 3 分鐘"}
+];
+
+var qi=0,score=0,answered=false,quizStarted=false,best=0,quizMode=null;
+try{best=parseInt(localStorage.getItem("dm-best")||"0",10)||0;}catch(e){best=0;}
+
+function dots(){
+  var h="";
+  for(var i=0;i<QUIZ.length;i++){
+    h+='<i class="'+(i<qi?"done":(i===qi?"on":""))+'"></i>';
+  }
+  $("#qdots").innerHTML=h;
+}
+function renderLocked(){
+  $("#qdots").innerHTML="";
+  var n=countRead(), all=(n>=TOTAL);
+  $("#quizBody").innerHTML=
+    '<div class="qcard lock-card">'+
+    '<div class="lic">'+(all?"☑️":"🔒")+'</div>'+
+    '<h2>'+(all?"14 頁都讀完了，去按「完成」打勾！":"先讀完教材，再來挑戰測驗")+'</h2>'+
+    '<p>'+(all?"回到「學習」頁最下方，按下「完成打勾」，測驗就會解鎖。":"共 14 頁，全部滑完並在教材最後按「完成」打勾後，這裡就會解鎖。")+'</p>'+
+    '<div class="lp">已讀 '+n+' / '+TOTAL+' 頁</div>'+
+    '<div class="btn-row" style="margin-bottom:0">'+
+      '<button class="btn primary" data-go="learn">'+(all?"☝️ 去按完成打勾":"📖 去讀教材")+'</button>'+
+    '</div></div>';
+}
+function renderQuiz(){
+  quizStarted=true;
+  quizMode = completed ? "quiz" : "locked";
+  if(!completed){ renderLocked(); return; }
+  dots();
+  if(qi>=QUIZ.length){ renderResult(); return; }
+  var Q=QUIZ[qi];
+  var h='<div class="qcard"><div class="qn">第 '+(qi+1)+' 題 / 共 '+QUIZ.length+' 題</div>'+
+        "<h2>"+Q.q+"</h2><div id='opts'>";
+  Q.opts.forEach(function(o,i){
+    h+='<button class="opt" data-i="'+i+'"><span class="lt">'+"ABCD"[i]+"</span><span>"+o+"</span></button>";
+  });
+  h+='</div><div id="fbSlot"></div><div class="qnav" id="qnav" style="display:none">'+
+     '<button class="btn primary" id="btnNext">'+(qi===QUIZ.length-1?"看成績":"下一題")+"</button></div></div>";
+  $("#quizBody").innerHTML=h;
+  answered=false;
+}
+function answer(i){
+  if(answered)return; answered=true;
+  var Q=QUIZ[qi];
+  var btns=$$("#opts .opt");
+  btns.forEach(function(b,j){
+    if(j===Q.a)b.classList.add("correct");
+    else if(j===i)b.classList.add("wrong");
+    else b.classList.add("dim");
+    b.disabled=true;
+  });
+  var right=(i===Q.a);
+  if(right)score++;
+  var fb="";
+  if(right){
+    fb='<div class="fb ok"><div class="hd">🎉 '+Q.ok+"</div><p class='why'>"+Q.why+"</p></div>";
+  }else{
+    fb='<div class="fb no"><div class="hd">💪 '+Q.no+"</div><p class='why'>"+Q.why+"</p>"+
+       '<button class="back" data-page="'+Q.page+'">👉 回看：'+Q.plabel+"</button></div>";
+  }
+  $("#fbSlot").innerHTML=fb;
+  $("#qnav").style.display="flex";
+  dots();
+}
+function renderResult(){
+  $("#qdots").innerHTML="";
+  var pct=Math.round(score/QUIZ.length*100);
+  if(score>best){best=score;try{localStorage.setItem("dm-best",String(best));}catch(e){}}
+  var msg,face;
+  if(score===QUIZ.length){msg="滿分！你是血糖小達人了 🏆";face="🏆";}
+  else if(score>=4){msg="超棒的，重點都抓住了！";face="🌟";}
+  else if(score>=3){msg="很不錯，再複習一次就更穩了！";face="💪";}
+  else {msg="別灰心，回到教材讀一次再挑戰，一定可以進步！";face="🌱";}
+  var h='<div class="qcard" style="text-align:center">'+
+    '<div class="qn">測驗完成</div>'+
+    '<div class="score-ring" style="--p:'+pct+'"><div class="in"><b>'+score+"/"+QUIZ.length+"</b><span>答對題數</span></div></div>"+
+    '<h2 style="margin-bottom:6px">'+face+" "+msg+"</h2>"+
+    '<p class="note" style="margin-bottom:14px">本次 '+pct+" 分 · 歷史最佳 "+best+" 題</p>"+
+    '<div class="btn-row" style="margin-bottom:10px">'+
+      '<button class="btn primary" id="btnRetry">🔄 再挑戰一次</button>'+
+      '<button class="btn ghost" data-go="review">📌 看重點回顧</button>'+
+    "</div>"+
+    '<div class="btn-row" style="margin-bottom:0">'+
+      '<button class="btn ghost" data-go="learn">📖 回去複習教材</button>'+
+    "</div></div>";
+  $("#quizBody").innerHTML=h;
+}
+document.addEventListener("click",function(e){
+  var o=e.target.closest(".opt");
+  if(o){ answer(parseInt(o.dataset.i,10)); return; }
+  var nx=e.target.closest("#btnNext");
+  if(nx){ qi++; renderQuiz(); return; }
+  var rt=e.target.closest("#btnRetry");
+  if(rt){ qi=0;score=0;renderQuiz(); return; }
+  var bk=e.target.closest(".back");
+  if(bk){ gotoPage(bk.dataset.page); return; }
+});
+
+/* ========== 分享：QR Code ========== */
+function utf8(str){
+  var out=[],i,c;
+  for(i=0;i<str.length;i++){
+    c=str.codePointAt(i);
+    if(c>0xFFFF)i++;
+    if(c<0x80)out.push(c);
+    else if(c<0x800)out.push(0xC0|c>>6,0x80|c&63);
+    else if(c<0x10000)out.push(0xE0|c>>12,0x80|(c>>6)&63,0x80|c&63);
+    else out.push(0xF0|c>>18,0x80|(c>>12)&63,0x80|(c>>6)&63,0x80|c&63);
+  }
+  return out;
+}
+var urlInput=$("#urlInput");
+function currentURL(){
+  var u=location.href;
+  if(/^https?:$/i.test(location.protocol))return u.split("#")[0];
+  return "";
+}
+urlInput.value=(function(){try{return localStorage.getItem("dm-url")||currentURL();}catch(e){return currentURL();}})();
+
+function renderQR(){
+  var txt=urlInput.value.trim();
+  var holder=$("#qrHolder"),cap=$("#qrCap");
+  if(!txt){
+    holder.innerHTML='<div class="cap">還沒有網址。先把教材發布（見下方 3 步驟），再把網址貼回這裡。</div>';
+    cap.textContent="";return;
+  }
+  if(!/^https?:\/\//i.test(txt)){
+    holder.innerHTML='<div class="cap">網址要以 http:// 或 https:// 開頭喔。</div>';
+    cap.textContent="";return;
+  }
+  if(typeof qrcode!=="function"){
+    holder.innerHTML='<div class="cap">QR 產生器未載入，請直接使用上方連結分享。</div>';
+    cap.textContent="";return;
+  }
+  try{
+    if(qrcode.stringToBytes)qrcode.stringToBytes=utf8;
+    var qr=qrcode(0,"M");
+    qr.addData(txt);
+    qr.make();
+    var size=qr.getModuleCount()*10+40;
+    var data=qr.createDataURL(10,20);
+    holder.innerHTML='<img src="'+data+'" width="'+size+'" height="'+size+'" alt="教材連結 QR Code">';
+    cap.textContent="用相機掃描即可開啟："+txt;
+    try{localStorage.setItem("dm-url",txt);}catch(e){}
+  }catch(err){
+    holder.innerHTML='<div class="cap">網址太長或格式有誤，請確認後再試一次。</div>';
+    cap.textContent="";
+  }
+}
+$("#btnQR").addEventListener("click",function(){renderQR();toast("QR Code 已更新");});
+$("#btnCopy").addEventListener("click",function(){
+  var txt=urlInput.value.trim();
+  if(!txt){toast("先貼上網址喔");return;}
+  var done=function(){toast("已複製連結 ✔");};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done).catch(fallback);
+  }else fallback();
+  function fallback(){
+    urlInput.focus();urlInput.select();
+    try{document.execCommand("copy");done();}catch(e){toast("請手動複製網址");}
+  }
+});
+$("#btnOpen").addEventListener("click",function(){
+  var txt=urlInput.value.trim();
+  if(!/^https?:\/\//i.test(txt)){toast("請先貼上 https 網址");return;}
+  window.open(txt,"_blank","noopener");
+});
+renderQR();
+
+/* ========== 起始 ========== */
+var hash=(location.hash||"").replace("#","");
+if(VIEWS.indexOf(hash)>=0)go(hash,true);
+else go("home",true);
+window.addEventListener("hashchange",function(){
+  var h=(location.hash||"").replace("#","");
+  if(VIEWS.indexOf(h)>=0&&h!==curView)go(h,true);
+});
+})();
+</script>
+</body>
+</html>
